@@ -10,7 +10,6 @@
     "hbs": "^4.0.4",
     "jquery": "^3.4.1",
     "mongoose": "^5.6.1",
-    "mongose": "0.0.2-security",
     "popper.js": "^1.14.7"
   },
   "devDependencies": {},
