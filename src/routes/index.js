@@ -50,11 +50,33 @@ app.get('/vernotas', (req, res ) => {
 		if(err){
 			return console.log(err);
 		}
-		
+
 		res.render('vernotas', {
 			listado : respuesta
 		})
 	})	
+});
+
+//Actualizar notas
+app.get('/actualizar', (req, res ) => {
+	res.render('actualizar')
+});
+
+//Actualizar
+app.post('/actualizar', (req, res ) => {
+	
+	Estudiante.findOneAndReplace({nombre: req.body.nombre}, req.body, {new: true}, (err, resultados) => {
+		if(err){
+			return console.log(err);
+		}
+
+		res.render('actualizar', {
+			nombre : resultados.nombre,
+			matematicas : resultados.matematicas,
+			ingles : resultados.ingles,
+			programacion : resultados.programacion
+		})
+	})
 });
 
 app.get('*',(req,res)=> {
