@@ -1,53 +1,25 @@
 const hbs = require('hbs');
-// const funciones = require('.././funciones');
 
-// hbs.registerHelper('obtenerPromedio', (estudiante) => {
-// 	return (estudiante.matematicas+estudiante.ingles+estudiante.programacion)/3;
-// });
+hbs.registerHelper('mostrarNotas', (listado) => {
+    let texto = `<table class='table table-striped table-hover'>
+        <thead class='thead-dark'>
+        <th>Nombre</th>
+        <th>Matemáticas</th>
+        <th>Inglés</th>
+        <th>Programación</th>
+        </thead>
+        <tbody>`;
 
-// hbs.registerHelper('guardarEstudiante', (estudiante) => {
-// 	return funciones.crear(estudiante);
-// });
+    listado.forEach(estudiante => {
+        texto = texto + 
+            `<tr>
+            <td> ${estudiante.nombre} </td>
+            <td> ${estudiante.matematicas} </td>
+            <td> ${estudiante.ingles} </td>
+            <td> ${estudiante.programacion} </td>
+            </tr>`;
+    });
 
-// hbs.registerHelper('listar', () => {
-// 	try {
-// 		return funciones.listar()
-// 	} catch(err){
-// 	 	return "No hay cursos disponibles";
-// 	}					
-// });
-
-//  hbs.registerHelper('listar2', () => {
-// 	try {
-// 			return funciones.listar2()
-// 		} catch(err){
-// 		 	return "No hay cursos disponibles";
-// 		 }					
-// 	});
-
-//   hbs.registerHelper('promedio', (nombre) => {
-// 		return funciones.promedio(nombre);			
-// 	});
-
- 
-//  hbs.registerHelper('desplegable', () => {
-//  	lista = require('./../listado.json')
-//  	let texto =`<div class="form-group">
-// 				<label>Estudiantes</label>              
-//           		<select class="form-control" name="nombre">
-// 				<option value="-">-</option>`
-// 	lista.forEach(estudiante =>{		
-// 			texto = texto +`<option value="${estudiante.nombre}">${estudiante.nombre}</option>`
-// 			});
-// 	texto = texto + `</select><br></div>`
-// 	return texto;
-//  });
-
-
-//  hbs.registerHelper('actualizar', (nombre, asignatura, nota) => {
-// 		return funciones.actualizar(nombre, asignatura, nota);			
-// 	});
-
-//  hbs.registerHelper('mostrar', (nombre) => {
-// 		return funciones.mostrar(nombre);			
-// 	});
+    texto = texto + '</tbody> </table>';
+    return texto;
+});

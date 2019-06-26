@@ -23,6 +23,7 @@ app.get('/', (req, res ) => {
 	})	
 });
 
+//Registrar
 app.post('/', (req, res ) => {
 	let estudiante = new Estudiante({
 		nombre: req.body.nombre,
@@ -38,9 +39,22 @@ app.post('/', (req, res ) => {
 			})
 		}
 		res.render('indexpost', {
-			mostrar: resultado
+			mostrar: estudiante.nombre
 		})
 	});
+});
+
+//Ver notas
+app.get('/vernotas', (req, res ) => {
+	Estudiante.find({}).exec((err, respuesta) => {
+		if(err){
+			return console.log(err);
+		}
+		
+		res.render('vernotas', {
+			listado : respuesta
+		})
+	})	
 });
 
 app.get('*',(req,res)=> {
