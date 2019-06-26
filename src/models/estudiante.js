@@ -12,6 +12,10 @@ const estudianteSchema = new Schema({
         //enum: {values:['Maria','Jesus','Pedro'], message: "Solo se permite Maria, Jesus, Pedro"}, //Valida que solo permita algunos valores y personaliza mensaje
         unique: true //Vuelve único el nombre
     },
+    password: {
+        type: String,
+        required: true
+    },
     matematicas: {
         type: Number,
         default: 0,
