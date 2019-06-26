@@ -79,6 +79,26 @@ app.post('/actualizar', (req, res ) => {
 	})
 });
 
+//Eliminar
+app.post('/eliminar', (req, res ) => {
+	
+	Estudiante.findOneAndDelete({nombre: req.body.nombre}, req.body, (err, resultados) => {
+		if(err){
+			return console.log(err);
+		}
+
+		if(!resultados){
+			res.render('eliminar', {
+				nombre : "Nombre no encontrado"
+			})
+		}
+
+		res.render('eliminar', {
+			nombre : resultados.nombre
+		})
+	})
+});
+
 app.get('*',(req,res)=> {
 	res.render('error', {
 		titulo: "Error 404"
