@@ -65,7 +65,7 @@ app.get('/actualizar', (req, res ) => {
 //Actualizar
 app.post('/actualizar', (req, res ) => {
 	
-	Estudiante.findOneAndReplace({nombre: req.body.nombre}, req.body, {new: true}, (err, resultados) => {
+	Estudiante.findOneAndReplace({nombre: req.body.nombre}, req.body, {new: true, runValidators: true, context: 'query'}, (err, resultados) => {
 		if(err){
 			return console.log(err);
 		}
