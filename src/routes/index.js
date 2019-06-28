@@ -79,6 +79,10 @@ app.get('/actualizar', (req, res ) => {
 			return console.log('Error');
 		}
 
+		if(!usuario){
+			return res.redirect('/');
+		}
+
 		res.render('actualizar', {
 			nombre : usuario.nombre,
 			matematicas : usuario.matematicas,
@@ -147,11 +151,23 @@ app.post('/ingresar', (req, res ) => {
 		}
 
 		req.session.usuario = resultados._id;
+		req.session.nombre = resultados.nombre;
 		console.log(req.session);
 
 		res.render('ingresar', {
-			mensaje : "Bienvenido " + resultados.nombre
+			mensaje : "Bienvenido " + resultados.nombre,
+			sesion: true,
+			nombre: req.session.nombre
 		})
+	})
+});
+
+app.get('/salir',(req,res)=> {
+	req.session.destroy((err) => {
+		if(err) return console.log(err)
+	})
+	res.render('error', {
+		titulo: "Error 404"
 	})
 });
 

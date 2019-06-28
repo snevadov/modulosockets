@@ -6,6 +6,9 @@ const path = require('path');
 const mongoose = require ('mongoose');
 const bodyParser = require('body-parser');
 
+//Variables de sesión
+const session = require('express-session');
+
 
 //Paths
 const dirPublic = path.join(__dirname, "../public");
@@ -18,6 +21,21 @@ app.use('/js', express.static(dirNode_modules + '/jquery/dist'));
 app.use('/js', express.static(dirNode_modules + '/popper.js/dist'));
 // app.use('/js', express.static(dirNode_modules + '/bootstrap/dist/js'));
 
+//Variables de sesión
+app.use(session({
+	secret: 'keyboard cat',
+	resave: false,
+	saveUninitialized: true
+  }))
+
+app.use((req, res, next) => {
+	if(req.session.usuario){
+		res.locals.sesion = true
+		res.locals.nombre = req.session.nombre
+	}
+	next()
+
+})
 
 //BodyParser
 app.use(bodyParser.urlencoded({ extended: false }));
