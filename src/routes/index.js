@@ -11,6 +11,9 @@ const dirPartials = path.join(__dirname, '../../template/partials');
 //Encriptación de contraseña
 const bcrypt = require('bcrypt');
 
+//Variables de sesión
+const session = require('express-session');
+
 //Helpers
 require('./../helpers/helpers');
 
@@ -18,6 +21,13 @@ require('./../helpers/helpers');
 app.set('view engine', 'hbs');
 app.set('views', dirViews);
 hbs.registerPartials(dirPartials);
+
+//Variables de sesión
+app.use(session({
+	secret: 'keyboard cat',
+	resave: false,
+	saveUninitialized: true
+  }))
 
 //Views
 app.get('/', (req, res ) => {
@@ -63,7 +73,19 @@ app.get('/vernotas', (req, res ) => {
 
 //Actualizar notas
 app.get('/actualizar', (req, res ) => {
-	res.render('actualizar')
+
+	Estudiante.findById(req.session.usuario, (err, usuario) => {
+		if(err){
+			return console.log('Error');
+		}
+
+		res.render('actualizar', {
+			nombre : usuario.nombre,
+			matematicas : usuario.matematicas,
+			ingles : usuario.ingles,
+			programacion : usuario.programacion
+		})
+	});
 });
 
 //Actualizar
@@ -123,6 +145,9 @@ app.post('/ingresar', (req, res ) => {
 				mensaje : "Contraseña no es correcta"
 			})
 		}
+
+		req.session.usuario = resultados._id;
+		console.log(req.session);
 
 		res.render('ingresar', {
 			mensaje : "Bienvenido " + resultados.nombre
