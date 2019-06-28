@@ -13,6 +13,7 @@ const bcrypt = require('bcrypt');
 
 //Variables de sesión
 const session = require('express-session');
+var MemoryStore = require('memorystore')(session);
 
 //Helpers
 require('./../helpers/helpers');
@@ -23,11 +24,18 @@ app.set('views', dirViews);
 hbs.registerPartials(dirPartials);
 
 //Variables de sesión
+// app.use(session({
+// 	secret: 'keyboard cat',
+// 	resave: false,
+// 	saveUninitialized: true
+//   }))
 app.use(session({
-	secret: 'keyboard cat',
-	resave: false,
-	saveUninitialized: true
-  }))
+    cookie: { maxAge: 86400000 },
+    store: new MemoryStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    }),
+    secret: 'keyboard cat'
+}))
 
 //Views
 app.get('/', (req, res ) => {
@@ -166,9 +174,7 @@ app.get('/salir',(req,res)=> {
 	req.session.destroy((err) => {
 		if(err) return console.log(err)
 	})
-	res.render('error', {
-		titulo: "Error 404"
-	})
+	return res.redirect('/');
 });
 
 app.get('*',(req,res)=> {
