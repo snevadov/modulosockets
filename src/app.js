@@ -53,7 +53,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(require('./routes/index'));
 
 //Mongoose
-mongoose.connect('mongodb://localhost:27017/asignaturas', {useNewUrlParser: true}, (error, resultado) => {
+mongoose.connect(process.env.URLDB, {useNewUrlParser: true}, (error, resultado) => {
 	if(error){
 		return console.log(error)
 	}
