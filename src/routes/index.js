@@ -23,6 +23,10 @@ app.set('view engine', 'hbs');
 app.set('views', dirViews);
 hbs.registerPartials(dirPartials);
 
+//Correo con SendGrid
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 //Variables de sesión
 // app.use(session({
 // 	secret: 'keyboard cat',
@@ -51,8 +55,16 @@ app.post('/', (req, res ) => {
 		password: bcrypt.hashSync(req.body.password, 10),
 		matematicas: req.body.matematicas,
 		ingles: req.body.ingles,
-		programacion: req.body.programacion
+		programacion: req.body.programacion,
+		email: req.body.email
 	})
+
+	const msg = {
+		to: req.body.email,
+		from: 'snevadov@gmail.com',
+		subject: 'Bienvenido',
+		text: 'Bienvenido a la página de Node.JS'
+	};
 
 	estudiante.save((err, resultado) => {
 		if(err){
@@ -60,6 +72,7 @@ app.post('/', (req, res ) => {
 				mostrar: err
 			})
 		}
+		sgMail.send(msg);
 		res.render('indexpost', {
 			mostrar: estudiante.nombre
 		})

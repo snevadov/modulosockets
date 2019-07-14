@@ -10,4 +10,6 @@ else {
 	urlDB = 'mongodb+srv://admin:12345@cursonodejstdea-3gfx5.mongodb.net/asignaturas?retryWrites=true&w=majority'
 }
 
+process.env.SENDGRID_API_KEY = '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';
+
 process.env.URLDB = urlDB

@@ -33,6 +33,11 @@ const estudianteSchema = new Schema({
         default: 0,
         min: 0,
         max: 5
+    },
+    email: {
+        type: String,
+        required: true,
+        trim: true
     }
 });
 
