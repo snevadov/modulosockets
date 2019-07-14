@@ -27,6 +27,10 @@ hbs.registerPartials(dirPartials);
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+//Manajo de archivos adjuntos
+const multer = require('multer');
+var upload = multer({ dest: 'uploads/' })
+
 //Variables de sesión
 // app.use(session({
 // 	secret: 'keyboard cat',
@@ -49,7 +53,7 @@ app.get('/', (req, res ) => {
 });
 
 //Registrar
-app.post('/', (req, res ) => {
+app.post('/', upload.single('archivo'), (req, res ) => {
 	let estudiante = new Estudiante({
 		nombre: req.body.nombre,
 		password: bcrypt.hashSync(req.body.password, 10),
