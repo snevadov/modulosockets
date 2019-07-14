@@ -29,7 +29,17 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 //Manajo de archivos adjuntos
 const multer = require('multer');
-var upload = multer({ dest: 'uploads/' })
+//var upload = multer({ dest: 'uploads/' });
+var storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+	  cb(null, 'public/uploads')
+	},
+	filename: function (req, file, cb) {
+	  cb(null, 'avatar' + req.body.nombre + path.extname(file.originalname))
+	}
+  })
+   
+  var upload = multer({ storage: storage })
 
 //Variables de sesión
 // app.use(session({
@@ -76,6 +86,7 @@ app.post('/', upload.single('archivo'), (req, res ) => {
 				mostrar: err
 			})
 		}
+		//Envío de correo
 		sgMail.send(msg);
 		res.render('indexpost', {
 			mostrar: estudiante.nombre
