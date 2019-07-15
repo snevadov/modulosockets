@@ -38,6 +38,9 @@ const estudianteSchema = new Schema({
         type: String,
         required: true,
         trim: true
+    },
+    avatar : {
+        type: Buffer
     }
 });
 

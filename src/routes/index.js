@@ -29,17 +29,23 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 //Manajo de archivos adjuntos
 const multer = require('multer');
+//Subida normal
 //var upload = multer({ dest: 'uploads/' });
-var storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-	  cb(null, 'public/uploads')
-	},
-	filename: function (req, file, cb) {
-	  cb(null, 'avatar' + req.body.nombre + path.extname(file.originalname))
-	}
-  })
+
+//Subida con cambio de nombre y de ubicación
+// var storage = multer.diskStorage({
+// 	destination: function (req, file, cb) {
+// 	  cb(null, 'public/uploads')
+// 	},
+// 	filename: function (req, file, cb) {
+// 	  cb(null, 'avatar' + req.body.nombre + path.extname(file.originalname))
+// 	}
+// })
    
-  var upload = multer({ storage: storage })
+// var upload = multer({ storage: storage })
+
+//Subida por buffer
+var upload = multer({  })
 
 //Variables de sesión
 // app.use(session({
@@ -70,7 +76,8 @@ app.post('/', upload.single('archivo'), (req, res ) => {
 		matematicas: req.body.matematicas,
 		ingles: req.body.ingles,
 		programacion: req.body.programacion,
-		email: req.body.email
+		email: req.body.email,
+		avatar: req.file.buffer
 	})
 
 	const msg = {
@@ -87,7 +94,7 @@ app.post('/', upload.single('archivo'), (req, res ) => {
 			})
 		}
 		//Envío de correo
-		sgMail.send(msg);
+		//sgMail.send(msg);
 		res.render('indexpost', {
 			mostrar: estudiante.nombre
 		})
@@ -186,14 +193,16 @@ app.post('/ingresar', (req, res ) => {
 			})
 		}
 
+		//Variables de sesión
 		req.session.usuario = resultados._id;
 		req.session.nombre = resultados.nombre;
-		console.log(req.session);
+		avatar = resultados.avatar.toString('base64');
 
 		res.render('ingresar', {
 			mensaje : "Bienvenido " + resultados.nombre,
 			sesion: true,
-			nombre: req.session.nombre
+			nombre: req.session.nombre,
+			avatar: avatar
 		})
 	})
 });
