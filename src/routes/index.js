@@ -45,7 +45,30 @@ const multer = require('multer');
 // var upload = multer({ storage: storage })
 
 //Subida por buffer
-var upload = multer({  })
+//var upload = multer({  })
+
+//Subida con límite
+var upload = multer({ 
+	limits:{
+		fileSize: 10000000
+	},
+	fileFilter (req, file, cb) {
+ 
+		// The function should call `cb` with a boolean
+		// to indicate if the file should be accepted
+	   
+		// To reject this file pass `false`, like so:
+		if(!file.originalname.match(/\.(jpg|png|jpeg)$/)) {
+			return cb(new Error('No es un archivo válido'))
+		}		
+	   
+		// To accept the file pass `true`, like so:
+		cb(null, true)
+	   
+		// You can always pass an error if something goes wrong:
+	   
+	  }
+ })
 
 //Variables de sesión
 // app.use(session({
